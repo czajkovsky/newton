@@ -8,10 +8,11 @@ uses
   const
     size = 10;
   type
-    a = array [1..size] of extended;
+    arr = array [1..size] of extended;
+    arr_int = array [1..size] of integer;
   var
-    x: a = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    dfatx: a = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    x: arr = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    dfatx: arr = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 
 type
@@ -61,10 +62,8 @@ procedure Newtonsystem (
 var i,j,jh,k,kh,l,lh,n1,p,q,rh : Integer;
     max,s                      : Extended;
     cond                       : Boolean;
-    dfatx                      : vector;
-    a,b                        : vector1;
-    r                          : vector2;
-    x1                         : vector3;
+    a, b, x1: arr;
+    r: arr_int;
 begin
   if (n<1) or (mit<1)
     then st:=1
@@ -86,10 +85,10 @@ begin
                       k:=0;
                       repeat
                         k:=k+1;
-                        df (k,n,x,dfatx);
+                        df (k,n);
                         for i:=1 to n do
                           a[i]:=dfatx[i];
-                        s:=-f(k,n,x);
+                        s:=-f(k,n);
                         for i:=1 to n do
                           s:=s+dfatx[i]*x[i];
                         a[n1]:=s;
@@ -195,9 +194,15 @@ end;
 
 
 procedure TForm1.Button1Click(Sender: TObject);
+var
+  res: extended;
+  it,st: integer;
 begin
-  x[1]=StrToFloat(Edit1.text);
-  ShowMessage (FloatToStr(f(1,5)));
+  x[1]:=0.1;
+  x[2]:=0.1;
+  x[3]:=0.3;
+  Newtonsystem(3, 10, 1e-16, it, st);
+  ShowMessage (FloatToStr(x[1]));
 end;
 
 end.

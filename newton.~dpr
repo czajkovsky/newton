@@ -2,7 +2,7 @@ program newton;
 
 uses
   Forms,
-  form in 'C:\Program Files\Borland\Delphi7\Projects\form.pas' {Form1};
+  main in 'main.pas' {Form1};
 
 {$R *.res}
 
