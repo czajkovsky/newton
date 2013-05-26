@@ -54,8 +54,7 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  x[1]=StrToFloat(Edit1.text);
-  ShowMessage (FloatToStr(f(1,5)));
+  ShowMessage (FloatToStr(f(stringToFloat(Edit1.text),5)));
 end;
 
 end.
