@@ -1,24 +1,26 @@
 unit main;
 
 interface
+  
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Dialogs, StdCtrls, ComCtrls, Grids;
   const
-    size = 10;
+    size = 20;
   type
     arr = array [1..size] of extended;
     arr_int = array [1..size] of integer;
   var
-    x: arr = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-    dfatx: arr = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    x: arr;
+    dfatx: arr;
 
 type
   TForm1 = class(TForm)
-    Edit1: TEdit;
-    Button1: TButton;
-    procedure Button1Click(Sender: TObject);
+    inputLoadEntries: TButton;
+    inputShowEntries: TStringGrid;
+    inputEntries: TEdit;
+    procedure inputLoadEntriesClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,10 +49,57 @@ begin
     1: begin
       dfatx[1]:=3;
       dfatx[2]:=x[3]*Sin(x[2]*x[3]);
-      dfatx[3]:=x[2]*Sin(x[2]*x[3]);
+      dfatx[3]:=x[2]*Sin(x[2]*x[3])
+    end;
+    2: begin
+      dfatx[1]:=2*x[1];
+      dfatx[2]:=-162*(x[2]+0.1);
+      dfatx[3]:=Cos(x[3])
+    end;
+    3: begin
+      dfatx[1]:=-x[2]*Exp(-x[1]*x[2]);
+      dfatx[2]:=-x[1]*Exp(-x[1]*x[2]);
+      dfatx[3]:=20
     end
   end
 end;
+
+function f1(i,n:Integer) : Extended; far;
+begin
+  case i of
+    1: f1:=Sqr(x[1])+8*x[2]-16;
+    2: f1:=x[1]-Exp(x[2]);
+  end
+end;
+
+procedure df1 (i, n: Integer); far;
+begin
+  case i of
+    1: begin
+      dfatx[1]:=2*x[1];
+      dfatx[2]:=8;
+    end;
+    2: begin
+      dfatx[1]:=1;
+      dfatx[2]:=-Exp(x[2]);
+    end;
+  end;
+end;
+
+procedure showEntries(opt: Integer); far;
+var i,count:Integer;
+begin
+  count:= Form1.inputShowEntries.RowCount-1;
+  Form1.inputShowEntries.Cells[0,0]:='xs';
+  Form1.inputShowEntries.Cells[1,0]:='values';
+  for i:=1 to count do
+    begin
+      Form1.inputShowEntries.Cells[1,i]:='0';
+      Form1.inputShowEntries.Cells[0,i]:='x'+IntToStr(i);
+    end
+end;
+
+
 
 procedure Newtonsystem (
   n: Integer;
@@ -59,8 +108,8 @@ procedure Newtonsystem (
   var it,st : Integer);
 
 var i,j,jh,k,kh,l,lh,n1,p,q,rh : Integer;
-    max,s                      : Extended;
-    cond                       : Boolean;
+    max,s: Extended;
+    cond: Boolean;
     a, b, x1: arr;
     r: arr_int;
 begin
@@ -192,16 +241,21 @@ end;
 
 
 
-procedure TForm1.Button1Click(Sender: TObject);
+
+
+
+
+procedure TForm1.inputLoadEntriesClick(Sender: TObject);
 var
   res: extended;
-  it,st: integer;
+  it,st,i: integer;
 begin
-  x[1]:=0.1;
-  x[2]:=0.1;
-  x[3]:=0.3;
-  Newtonsystem(3, 10, 1e-16, it, st);
-  ShowMessage (FloatToStr(x[1]));
+  inputShowEntries.RowCount:=strToInt(inputEntries.Text)+1; //to-do try except
+  showEntries(0);
 end;
+
+
+
+
 
 end.

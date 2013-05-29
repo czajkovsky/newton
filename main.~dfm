@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 192
-  Top = 114
-  Width = 979
-  Height = 563
+  Left = 175
+  Top = 181
+  Width = 638
+  Height = 448
   Caption = 'Form1'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,21 +13,35 @@ object Form1: TForm1
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Edit1: TEdit
-    Left = 32
-    Top = 16
-    Width = 169
-    Height = 21
-    TabOrder = 0
-    Text = 'Edit1'
-  end
-  object Button1: TButton
-    Left = 128
-    Top = 104
+  object inputLoadEntries: TButton
+    Left = 248
+    Top = 32
     Width = 75
     Height = 25
-    Caption = 'Button1'
+    Caption = 'Load'
+    TabOrder = 0
+    OnClick = inputLoadEntriesClick
+  end
+  object inputShowEntries: TStringGrid
+    Left = 32
+    Top = 88
+    Width = 193
+    Height = 265
+    ColCount = 2
+    RowCount = 4
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
     TabOrder = 1
-    OnClick = Button1Click
+    RowHeights = (
+      24
+      24
+      24
+      24)
+  end
+  object inputEntries: TEdit
+    Left = 120
+    Top = 32
+    Width = 121
+    Height = 21
+    TabOrder = 2
   end
 end
