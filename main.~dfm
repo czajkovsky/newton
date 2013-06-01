@@ -81,6 +81,14 @@ object Form1: TForm1
       RowCount = 4
       TabOrder = 3
     end
+    object inputCompute: TButton
+      Left = 416
+      Top = 360
+      Width = 75
+      Height = 25
+      Caption = 'Compute'
+      TabOrder = 4
+    end
   end
   object GroupBox2: TGroupBox
     Left = 528
@@ -120,7 +128,7 @@ object Form1: TForm1
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
       TabOrder = 0
     end
-    object inputShowResultsInt: TStringGrid
+    object outputShowResultsInt: TStringGrid
       Left = 265
       Top = 88
       Width = 224
@@ -143,6 +151,15 @@ object Form1: TForm1
       Height = 25
       Caption = 'Load'
       TabOrder = 3
+      OnClick = inputLoadEntriesIntClick
+    end
+    object inputComputeInt: TButton
+      Left = 416
+      Top = 360
+      Width = 75
+      Height = 25
+      Caption = 'Compute'
+      TabOrder = 4
     end
   end
 end

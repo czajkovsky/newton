@@ -27,13 +27,16 @@ type
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     inputShowEntriesInt: TStringGrid;
-    inputShowResultsInt: TStringGrid;
+    outputShowResultsInt: TStringGrid;
     labelNumberOfIntervals: TLabel;
     inputLoadEntriesInt: TButton;
     labelInitialIntervals: TLabel;
     labelComputedIntervals: TLabel;
     inputEntriesInt: TEdit;
+    inputCompute: TButton;
+    inputComputeInt: TButton;
     procedure inputLoadEntriesClick(Sender: TObject);
+    procedure inputLoadEntriesIntClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -47,10 +50,10 @@ implementation
 
 {$R *.dfm}
 
-procedure showEntries(opt: Integer); far;
-var i,count:Integer;
+procedure showEntries(opt, count: Integer); far;
+var i:Integer;
 begin
-  count:= Form1.inputShowEntries.RowCount-1;
+  Form1.inputShowEntries.RowCount:=count;
   Form1.inputShowEntries.Cells[0,0]:='xs';
   Form1.inputShowEntries.Cells[1,0]:='values';
   for i:=1 to count do
@@ -60,10 +63,27 @@ begin
     end
 end;
 
-procedure showResults(opt: Integer); far;
-var i,count:Integer;
+procedure showEntriesInt(opt, count: Integer); far;
+var i:Integer;
 begin
-  count:= Form1.outputShowResults.RowCount-1;
+  inputShowEntriesInt.RowCount:=count;
+  Form1.inputShowEntriesInt.Cells[0,0]:='xs';
+  Form1.inputShowEntriesInt.Cells[1,0]:='values.left';
+  Form1.inputShowEntriesInt.Cells[2,0]:='values.right';
+  for i:=1 to count do
+    begin
+      Form1.inputShowEntriesInt.Cells[1,i]:='0';
+      Form1.inputShowEntriesInt.Cells[2,i]:='0';
+      Form1.inputShowEntriesInt.Cells[0,i]:='x'+IntToStr(i);
+    end
+end;
+
+
+
+procedure showResults(opt, count: Integer); far;
+var i:Integer;
+begin
+  Form1.outputShowResults.RowCount:=count;
   Form1.outputShowResults.Cells[0,0]:='xs';
   Form1.outputShowResults.Cells[1,0]:='results';
   for i:=1 to count do
@@ -74,10 +94,10 @@ begin
     end
 end;
 
-procedure showResultsInt(opt: Integer); far;
-var i,count:Integer;
+procedure showResultsInt(opt, count: Integer); far;
+var i:Integer;
 begin
-  count:= Form1.outputShowResultsInt.RowCount-1;
+  outputShowResultsInt.RowCount:=count;
   Form1.outputShowResultsInt.Cells[0,0]:='xs';
   Form1.outputShowResultsInt.Cells[1,0]:='results.left';
   Form1.outputShowResultsInt.Cells[2,0]:='results.right';
@@ -99,13 +119,23 @@ var
 begin
   try
     n:=strToInt(inputEntries.Text)+1; //to-do try except
-    inputShowEntries.RowCount:=n;
-    outputShowResults.RowCount:=n;
-    showEntries(0);
-    showResults(0);
+    showEntries(0, n);
+    showResults(0, n);
   except
     on Exception : EConvertError do
       ShowMessage('Not an integer!');
+  end;
+end;
+
+procedure TForm1.inputLoadEntriesIntClick(Sender: TObject);
+var
+  n: integer;
+begin
+  try
+    n:=strToInt(inputEntriesInt.Text)+1; //to-do try except
+    showEntriesInt(0, n);
+    showResultsInt(0, n);
+  except
   end;
 end;
 
