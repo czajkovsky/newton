@@ -61,12 +61,17 @@ procedure showEntries(opt, count: Integer); far;
 var i:Integer;
 begin
   Form1.inputShowEntries.RowCount:=count;
+  Form1.outputShowResults.RowCount:=count;
   Form1.inputShowEntries.Cells[0,0]:='xs';
   Form1.inputShowEntries.Cells[1,0]:='values';
+  Form1.outputShowResults.Cells[0,0]:='xs';
+  Form1.outputShowResults.Cells[1,0]:='results';
   for i:=1 to count do
     begin
       Form1.inputShowEntries.Cells[1,i]:='0';
       Form1.inputShowEntries.Cells[0,i]:='x'+IntToStr(i);
+      Form1.outputShowResults.Cells[0,i]:='x'+IntToStr(i);
+      Form1.outputShowResults.Cells[1,i]:='-';
     end
 end;
 
@@ -74,60 +79,38 @@ procedure showEntriesInt(opt, count: Integer); far;
 var i:Integer;
 begin
   Form1.inputShowEntriesInt.RowCount:=count;
+  Form1.outputShowResultsInt.RowCount:=count;
   Form1.inputShowEntriesInt.Cells[0,0]:='xs';
   Form1.inputShowEntriesInt.Cells[1,0]:='values.left';
   Form1.inputShowEntriesInt.Cells[2,0]:='values.right';
-  for i:=1 to count do
-    begin
-      Form1.inputShowEntriesInt.Cells[1,i]:='0';
-      Form1.inputShowEntriesInt.Cells[2,i]:='0';
-      Form1.inputShowEntriesInt.Cells[0,i]:='x'+IntToStr(i);
-    end
-end;
-
-procedure showResults(opt, count: Integer); far;
-var i:Integer;
-begin
-  Form1.outputShowResults.RowCount:=count;
-  Form1.outputShowResults.Cells[0,0]:='xs';
-  Form1.outputShowResults.Cells[1,0]:='results';
-  for i:=1 to count do
-    begin
-      if opt=0 then
-        Form1.outputShowResults.Cells[1,i]:='-'
-      else
-        Form1.outputShowResults.Cells[1,i]:=FloatToStr(x[i]);
-      Form1.outputShowResults.Cells[0,i]:='x'+IntToStr(i);
-    end
-end;
-
-procedure showResultsInt(opt, count: Integer); far;
-var i:Integer;
-begin
-  Form1.outputShowResultsInt.RowCount:=count;
   Form1.outputShowResultsInt.Cells[0,0]:='xs';
   Form1.outputShowResultsInt.Cells[1,0]:='results.left';
   Form1.outputShowResultsInt.Cells[2,0]:='results.right';
   for i:=1 to count do
     begin
-      if opt=0 then
-        begin
-          Form1.outputShowResultsInt.Cells[1,i]:='-';
-          Form1.outputShowResultsInt.Cells[2,i]:='-';
-        end;
+      Form1.inputShowEntriesInt.Cells[1,i]:='0';
+      Form1.inputShowEntriesInt.Cells[2,i]:='0';
+      Form1.inputShowEntriesInt.Cells[0,i]:='x'+IntToStr(i);
+      Form1.outputShowResultsInt.Cells[1,i]:='-';
+      Form1.outputShowResultsInt.Cells[2,i]:='-';
       Form1.outputShowResultsInt.Cells[0,i]:='x'+IntToStr(i);
-    end;
+    end
+end;
+
+procedure showResults(x: vector; opt, count: Integer); far;
+var i:Integer;
+begin
+  for i:=1 to Form1.outputShowResults.rowcount do
+    begin
+      Form1.outputShowResults.Cells[1,i]:=FloatToStr(x[i]);
+    end
 end;
 
 procedure TForm1.inputLoadEntriesClick(Sender: TObject);
-var
-  res: extended;
-  it,st,i: integer;
 begin
   try
     n:=strToInt(inputEntries.Text);
     showEntries(0, n+1);
-    showResults(0, n+1);
   except
     on Exception : EConvertError do
       ShowMessage('Not an integer!');
@@ -139,12 +122,11 @@ begin
   try
     n:=strToInt(inputEntriesInt.Text);
     showEntriesInt(0, n+1);
-    showResultsInt(0, n+1);
   except
   end;
 end;
 
-procedure loadVector();
+procedure loadVector(x:vector);
 var i: Integer;
 begin
   for i:=1 to n do
@@ -157,13 +139,14 @@ procedure compute();
 var
   it, st, mit:Integer;
   eps: Extended;
+  x: vector;
 begin
-  loadVector();
+  SetLength(x, n+1);
+  loadVector(x);
   eps:=StrToFloat(Form1.inputEps.Text);
   mit:=StrToInt(Form1.inputMit.Text);
-  showMessage(IntToStr(n));
-  Newtonsystem(n, x, f, df, 10, 1e-16, it, st);
-  showResults(1,n+1);
+  Newtonsystem(n, x, f1, df1, mit, eps, it, st);
+  showResults(x,1,n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
 end;

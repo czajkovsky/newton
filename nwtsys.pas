@@ -3,10 +3,10 @@ unit nwtsys;
 interface
   uses
     IntervalArithmetic
-  type vector = array [1..200] of extended;
-  type vector1 = array [1..200] of extended;
-  type vector2 = array [1..200] of integer;
-  type vector3 = array [1..200] of extended;
+  type vector = array of extended;
+  type vector1 = array of extended;
+  type vector2 = array of integer;
+  type vector3 = array of extended;
   type fx = function(i,n: Integer; x: vector): Extended; far;
   type dfx = procedure (i,n: Integer; x: vector; var dfatx : vector); far;
   procedure Newtonsystem (n         : Integer;
@@ -20,8 +20,6 @@ interface
   procedure df (i, n: Integer; x: vector; var dfatx: vector); far;
   function f1(i,n:Integer; x: vector) : Extended; far;
   procedure df1 (i, n: Integer; x: vector; var dfatx: vector); far;
-
-
 
 implementation
 
