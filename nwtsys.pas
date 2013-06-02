@@ -2,7 +2,7 @@ unit nwtsys;
 
 interface
   uses
-    IntervalArithmetic
+    IntervalArithmetic;
   type vector = array of extended;
   type vector1 = array of extended;
   type vector2 = array of integer;
@@ -21,6 +21,22 @@ interface
   function f1(i,n:Integer; x: vector) : Extended; far;
   procedure df1 (i, n: Integer; x: vector; var dfatx: vector); far;
 
+  type vector_int = array of interval;
+  type vector1_int = array of interval;
+  type vector2_int = array of integer;
+  type vector3_int = array of interval;
+  type fx_int = function(i,n: Integer; x: vector_int): interval; far;
+  type dfx_int = procedure (i,n: Integer; x: vector_int; var dfatx : vector_int); far;
+  procedure Newtonsystem_int (n         : Integer;
+                          var x     : vector_int;
+                          f         : fx_int;
+                          df        : dfx_int;
+                          mit       : Integer;
+                          eps       : Extended;
+                          var it,st : Integer);
+  function f1_int(i,n:Integer; x: vector_int) : Interval; far;
+  procedure df1_int (i, n: Integer; x: vector_int; var dfatx: vector_int); far;
+
 implementation
 
 function f(i,n:Integer; x: vector) : Extended; far;
@@ -32,11 +48,29 @@ begin
   end
 end;
 
+
+
 function f1(i,n:Integer; x: vector) : Extended; far;
 begin
   case i of
     1: f1:=Sqr(x[1])+8*x[2]-16;
     2: f1:=x[1]-Exp(x[2]);
+  end
+end;
+
+function f1_int(i,n:Integer; x: vector_int) : Interval; far;
+var
+  res: Interval;
+  st: Integer;
+begin
+  case i of
+    1: begin
+      res:=isqr(x[1],st);
+      res:=iadd(res,imul(make_ia(8),x[2]));
+      res:=isub(res,make_ia(16));
+      f1_int:=res;
+    end;
+    2: f1_int:=isub(x[1],iexp(x[2],st));
   end
 end;
 
@@ -50,6 +84,21 @@ begin
     2: begin
         dfatx[1]:=1;
         dfatx[2]:=-Exp(x[2])
+      end;
+    end
+end;
+
+procedure df1_int(i, n: Integer; x: vector_int; var dfatx: vector_int); far;
+var st: Integer;
+begin
+  case i of
+    1: begin
+        dfatx[1]:=imul(make_ia(2),x[1]);
+        dfatx[2]:=make_ia(8);
+      end;
+    2: begin
+        dfatx[1]:=make_ia(1);
+        dfatx[2]:=imul(make_ia(-1),iexp(x[2],st));
       end;
     end
 end;
@@ -139,6 +188,11 @@ var i,j,jh,k,kh,l,lh,n1,p,q,rh : Integer;
     r                          : vector2;
     x1                         : vector3;
 begin
+  SetLength(dfatx, n+10);
+  SetLength(a, n+10);
+  SetLength(b, n+10);
+  SetLength(r, n+10);
+  SetLength(x1, n+10);
   if (n<1) or (mit<1)
     then st:=1
     else begin
@@ -264,4 +318,153 @@ begin
            until (st<>0) or cond
          end
 end;
+
+procedure Newtonsystem_int (n         : Integer;
+                        var x     : vector_int;
+                        f         : fx_int;
+                        df        : dfx_int;
+                        mit       : Integer;
+                        eps       : Extended;
+                        var it,st : Integer);
+
+var i,j,jh,k,kh,l,lh,n1,p,q,rh,myst : Integer;
+    max,s                      : Interval;
+    cond                       : Boolean;
+    dfatx                      : vector_int;
+    a,b                        : vector1_int;
+    r                          : vector2_int;
+    x1                         : vector3_int;
+begin
+  SetLength(dfatx, n+10);
+  SetLength(a, n+10);
+  SetLength(b, n+10);
+  SetLength(r, n+10);
+  SetLength(x1, n+10);
+  if (n<1) or (mit<1)
+    then st:=1
+    else begin
+           st:=0;
+           it:=0;
+           n1:=n+1;
+           repeat
+             it:=it+1;
+             if it>mit
+               then begin
+                      st:=3;
+                      it:=it-1
+                    end
+               else begin
+                      p:=n1;
+                      for i:=1 to n1 do
+                        r[i]:=0;
+                      k:=0;
+                      repeat
+                        k:=k+1;
+                        df (k,n,x,dfatx);
+                        for i:=1 to n do
+                          a[i]:=dfatx[i];
+                        s:=imul(make_ia(-1),f(k,n,x));
+                        for i:=1 to n do
+                          s:=iadd(s,imul(dfatx[i],x[i]));
+                        a[n1]:=s;
+                        for i:=1 to n do
+                          begin
+                            rh:=r[i];
+                            if rh<>0
+                              then b[rh]:=a[i]
+                          end;
+                        kh:=k-1;
+                        l:=0;
+                        max:=make_ia(0);
+                        for j:=1 to n1 do
+                          if r[j]=0
+                            then begin
+                                   s:=a[j];
+                                   l:=l+1;
+                                   q:=l;
+                                   for i:=1 to kh do
+                                     begin
+                                      s:=isub(s,imul(b[i],x1[q]));
+                                      q:=q+p
+                                     end;
+                                   a[l]:=s;
+                                   s:=iabs(s);
+                                   if (j<n1) and ((s.a > max.a) and (s.b > max.b))
+                                     then begin
+                                            max:=s;
+                                            jh:=j;
+                                            lh:=l
+                                          end
+                                 end;
+                        if ((max.a=0) and (max.b=0))
+                          then st:=2
+                          else begin
+                                 max:=idiv(make_ia(1),a[lh]);
+                                 r[jh]:=k;
+                                 for i:=1 to p do
+                                   a[i]:=imul(max,a[i]);
+                                 jh:=0;
+                                 q:=0;
+                                 for j:=1 to kh do
+                                   begin
+                                     s:=x1[q+lh];
+                                     for i:=1 to p do
+                                     if i<>lh
+                                       then begin
+                                              jh:=jh+1;
+                                              x1[jh]:=isub(x1[q+i],imul(s,a[i]));
+                                            end;
+                                     q:=q+p
+                                   end;
+                                 for i:=1 to p do
+                                   if i<>lh
+                                     then begin
+                                            jh:=jh+1;
+                                            x1[jh]:=a[i]
+                                          end;
+                                 p:=p-1
+                               end
+                      until (k=n) or (st=2);
+                      if st=0
+                        then begin
+                               for k:=1 to n do
+                                 begin
+                                   rh:=r[k];
+                                   if rh<>k
+                                     then begin
+                                            s:=x1[k];
+                                            x1[k]:=x1[rh];
+                                            i:=r[rh];
+                                            while i<>k do
+                                              begin
+                                                x1[rh]:=x1[i];
+                                                r[rh]:=rh;
+                                                rh:=i;
+                                                i:=r[rh]
+                                              end;
+                                            x1[rh]:=s;
+                                            r[rh]:=rh
+                                          end
+                                 end;
+                               cond:=true;
+                               i:=0;
+                               repeat
+                                 i:=i+1;
+                                 max:=iabs(x[i]);
+                                 s:=iabs(x1[i]);
+                                 if ((max.a<s.a) and (max.b<s.b))
+                                   then max:=s;
+                                 if ((max.a<>0) and (max.b<>0))
+                                   then if ((idiv(iabs(isub(x[i],x1[i])),max).a>=eps) and (idiv(iabs(isub(x[i],x1[i])),max).b>=eps))
+                                          then cond:=false
+                               until (i=n) or not cond;
+                               for i:=1 to n do
+                                 x[i]:=x1[i]
+                             end
+                    end
+           until (st<>0) or cond
+         end
+end;
+
+
 end.

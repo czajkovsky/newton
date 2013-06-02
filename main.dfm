@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 204
-  Top = 160
-  Width = 1056
-  Height = 599
+  Left = -18
+  Top = 231
+  Width = 1065
+  Height = 556
   Caption = 'Newton system'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -161,6 +161,7 @@ object Form1: TForm1
       Height = 25
       Caption = 'Compute'
       TabOrder = 4
+      OnClick = inputComputeIntClick
     end
   end
   object GroupBox3: TGroupBox

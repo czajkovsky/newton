@@ -5,9 +5,10 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, Grids, nwtsys;
+  Dialogs, StdCtrls, ComCtrls, Grids, nwtsys, IntervalArithmetic;
   var
     x: vector;
+    x_int: vector_int;
     n: Integer;
 
 type
@@ -43,6 +44,7 @@ type
     procedure inputLoadEntriesClick(Sender: TObject);
     procedure inputLoadEntriesIntClick(Sender: TObject);
     procedure inputComputeClick(Sender: TObject);
+    procedure inputComputeIntClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -106,6 +108,16 @@ begin
     end
 end;
 
+procedure showResultsInt(x: vector_int; opt, count: Integer); far;
+var i:Integer;
+begin
+  for i:=1 to Form1.outputShowResults.rowcount do
+    begin
+      Form1.outputShowResultsInt.Cells[1,i]:=FloatToStr(x[i].a);
+      Form1.outputShowResultsInt.Cells[2,i]:=FloatToStr(x[i].b);
+    end
+end;
+
 procedure TForm1.inputLoadEntriesClick(Sender: TObject);
 begin
   try
@@ -135,6 +147,15 @@ begin
     end
 end;
 
+procedure loadVectorInt(x_int:vector_int);
+var i: Integer;
+begin
+  for i:=1 to n do
+    begin
+      x_int[i]:=int_read(Form1.inputShowEntries.Cells[1,i]+' '+Form1.inputShowEntries.Cells[2,i]);
+    end
+end;
+
 procedure compute();
 var
   it, st, mit:Integer;
@@ -151,9 +172,31 @@ begin
   Form1.outputMessage.Text:=IntToStr(st);
 end;
 
+procedure compute_int();
+var
+  it, st, mit:Integer;
+  eps: Extended;
+  x_int: vector_int;
+begin
+  SetLength(x_int, n+1);
+  loadVectorInt(x_int);
+  eps:=StrToFloat(Form1.inputEps.Text);
+  mit:=StrToInt(Form1.inputMit.Text);
+  Newtonsystem_int(n, x_int, f1_int, df1_int, mit, eps, it, st);
+  showResultsInt(x_int,1,n+1);
+  Form1.outputIt.Text:=IntToStr(it);
+  Form1.outputMessage.Text:=IntToStr(st);
+end;
+
 procedure TForm1.inputComputeClick(Sender: TObject);
 begin
   compute();
+end;
+
+procedure TForm1.inputComputeIntClick(Sender: TObject);
+begin
+  compute_int();
+
 end;
 
 end.

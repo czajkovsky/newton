@@ -1342,9 +1342,9 @@ implementation
   function iabs (const x: interval) : interval;
   begin
     if((x.a>0) and (x.b>0)) then
-      Result:=x
+      Result:=x;
     else
       Result:=opposite(x);
-  end;
+  end
 
 end.

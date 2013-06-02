@@ -3,7 +3,8 @@ program newton;
 uses
   Forms,
   main in 'main.pas' {Form1},
-  nwtnpas in 'nwtnpas.pas';
+  nwtnpas in 'nwtnpas.pas',
+  IntervalArithmetic in 'intervalarithmetic.pas';
 
 {$R *.res}
 
