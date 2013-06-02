@@ -30,6 +30,16 @@ type
     inputEntriesInt: TEdit;
     inputCompute: TButton;
     inputComputeInt: TButton;
+    GroupBox3: TGroupBox;
+    inputMit: TEdit;
+    Label1: TLabel;
+    inputEps: TEdit;
+    Label2: TLabel;
+    GroupBox4: TGroupBox;
+    outputIt: TEdit;
+    outputMessage: TEdit;
+    Label3: TLabel;
+    Label4: TLabel;
     procedure inputLoadEntriesClick(Sender: TObject);
     procedure inputLoadEntriesIntClick(Sender: TObject);
     procedure inputComputeClick(Sender: TObject);
@@ -144,13 +154,18 @@ begin
 end;
 
 procedure compute();
-var it,st:Integer;
+var
+  it, st, mit:Integer;
+  eps: Extended;
 begin
   loadVector();
+  eps:=StrToFloat(Form1.inputEps.Text);
+  mit:=StrToInt(Form1.inputMit.Text);
   showMessage(IntToStr(n));
-  //Newtonsystem(3, x, f, df, 10, 1e-16, it, st);
-  showMessage(IntToStr(it));
-  showResults(1,n);
+  Newtonsystem(n, x, f, df, 10, 1e-16, it, st);
+  showResults(1,n+1);
+  Form1.outputIt.Text:=IntToStr(it);
+  Form1.outputMessage.Text:=IntToStr(st);
 end;
 
 procedure TForm1.inputComputeClick(Sender: TObject);

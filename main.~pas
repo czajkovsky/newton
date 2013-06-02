@@ -127,9 +127,9 @@ end;
 procedure TForm1.inputLoadEntriesIntClick(Sender: TObject);
 begin
   try
-    n:=strToInt(inputEntriesInt.Text)+1;
-    showEntriesInt(0, n);
-    showResultsInt(0, n);
+    n:=strToInt(inputEntriesInt.Text);
+    showEntriesInt(0, n+1);
+    showResultsInt(0, n+1);
   except
   end;
 end;

@@ -1,6 +1,8 @@
 unit nwtsys;
 
 interface
+  uses
+    IntervalArithmetic
   type vector = array [1..200] of extended;
   type vector1 = array [1..200] of extended;
   type vector2 = array [1..200] of integer;
@@ -51,6 +53,7 @@ begin
         dfatx[1]:=1;
         dfatx[2]:=-Exp(x[2])
       end;
+    end
 end;
 
 procedure df (i, n: Integer; x: vector; var dfatx: vector); far;
