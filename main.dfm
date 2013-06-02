@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 100
-  Top = 152
+  Left = 268
+  Top = 289
   Width = 1065
   Height = 556
   Caption = 'Newton system'
@@ -66,6 +66,7 @@ object Form1: TForm1
       RowCount = 4
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
       TabOrder = 2
+      Visible = False
       RowHeights = (
         24
         24
@@ -80,6 +81,10 @@ object Form1: TForm1
       ColCount = 2
       RowCount = 4
       TabOrder = 3
+      Visible = False
+      ColWidths = (
+        64
+        156)
     end
     object inputCompute: TButton
       Left = 416
@@ -128,6 +133,7 @@ object Form1: TForm1
       RowCount = 4
       Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
       TabOrder = 0
+      Visible = False
     end
     object outputShowResultsInt: TStringGrid
       Left = 265
@@ -137,6 +143,7 @@ object Form1: TForm1
       ColCount = 3
       RowCount = 4
       TabOrder = 1
+      Visible = False
     end
     object inputEntriesInt: TEdit
       Left = 16

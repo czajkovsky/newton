@@ -59,9 +59,11 @@ implementation
 
 {$R *.dfm}
 
-procedure showEntries(opt, count: Integer); far;
+procedure showEntries(count: Integer); far;
 var i:Integer;
 begin
+  Form1.inputShowEntries.Visible:=true;
+  Form1.outputShowResults.Visible:=true;
   Form1.inputShowEntries.RowCount:=count;
   Form1.outputShowResults.RowCount:=count;
   Form1.inputShowEntries.Cells[0,0]:='xs';
@@ -77,9 +79,11 @@ begin
     end
 end;
 
-procedure showEntriesInt(opt, count: Integer); far;
+procedure showEntriesInt(count: Integer); far;
 var i:Integer;
 begin
+  Form1.inputShowEntriesInt.Visible:=true;
+  Form1.outputShowResultsInt.Visible:=true;
   Form1.inputShowEntriesInt.RowCount:=count;
   Form1.outputShowResultsInt.RowCount:=count;
   Form1.inputShowEntriesInt.Cells[0,0]:='xs';
@@ -99,23 +103,22 @@ begin
     end
 end;
 
-procedure showResults(x: vector; opt, count: Integer); far;
+procedure showResults(x: vector; count: Integer); far;
 var i:Integer;
 begin
   for i:=1 to Form1.outputShowResults.rowcount do
     begin
-      Form1.outputShowResults.Cells[1,i]:=FloatToStr(x[i]);
+      Form1.outputShowResults.Cells[1,i]:=FloatToStrF(x[i], ffExponent, 17, 4);
     end
 end;
 
-procedure showResultsInt(x: vector_int; opt, count: Integer); far;
+procedure showResultsInt(x: vector_int; count: Integer); far;
 var i:Integer;
 begin
   for i:=1 to count-1 do
     begin
-      showMessage(FloatToStr(x[i].a));
-      Form1.outputShowResultsInt.Cells[1,i]:=FloatToStr(x[i].a);
-      Form1.outputShowResultsInt.Cells[2,i]:=FloatToStr(x[i].b);
+      Form1.outputShowResultsInt.Cells[1,i]:=FloatToStrF(x[i].a, ffExponent, 17, 4);
+      Form1.outputShowResultsInt.Cells[2,i]:=FloatToStrF(x[i].b, ffExponent, 17, 4);
     end
 end;
 
@@ -123,7 +126,7 @@ procedure TForm1.inputLoadEntriesClick(Sender: TObject);
 begin
   try
     n:=strToInt(inputEntries.Text);
-    showEntries(0, n+1);
+    showEntries(n+1);
   except
     on Exception : EConvertError do
       ShowMessage('Not an integer!');
@@ -134,7 +137,7 @@ procedure TForm1.inputLoadEntriesIntClick(Sender: TObject);
 begin
   try
     n:=strToInt(inputEntriesInt.Text);
-    showEntriesInt(0, n+1);
+    showEntriesInt(n+1);
   except
   end;
 end;
@@ -169,7 +172,7 @@ begin
   eps:=StrToFloat(Form1.inputEps.Text);
   mit:=StrToInt(Form1.inputMit.Text);
   Newtonsystem(n, x, f1, df1, mit, eps, it, st);
-  showResults(x,1,n+1);
+  showResults(x,n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
 end;
@@ -185,7 +188,7 @@ begin
   eps:=StrToFloat(Form1.inputEps.Text);
   mit:=StrToInt(Form1.inputMit.Text);
   Newtonsystem_int(n, x_int, f1_int, df1_int, mit, eps, it, st);
-  showResultsInt(x_int,1,n+1);
+  showResultsInt(x_int,n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
 end;
@@ -198,7 +201,6 @@ end;
 procedure TForm1.inputComputeIntClick(Sender: TObject);
 begin
   compute_int();
-
 end;
 
 end.

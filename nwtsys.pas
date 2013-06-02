@@ -47,12 +47,10 @@ begin
     3: f:=Exp(-x[1]*x[2])+20*x[3]+(10*Pi-3)/3;
   end
 end;
-
-
-
 function f1(i,n:Integer; x: vector) : Extended; far;
 begin
   case i of
+
     1: f1:=Sqr(x[1])+8*x[2]-16;
     2: f1:=x[1]-Exp(x[2]);
   end
