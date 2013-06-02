@@ -1,20 +1,14 @@
 unit main;
 
 interface
-  
+
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, Grids;
-  nwtnpas in 'nwtnpas.pas';
-  const
-    size = 20;
-  type
-    arr = array [1..size] of extended;
-    arr_int = array [1..size] of integer;
+  Dialogs, StdCtrls, ComCtrls, Grids, nwtsys;
   var
-    x: arr;
-    dfatx: arr;
+    x: vector;
+    //dfatx: arr;
 
 type
   TForm1 = class(TForm)
@@ -49,6 +43,7 @@ var
   Form1: TForm1;
 
 implementation
+  procedure Newtonsystem (n: Integer; var x: vector; f: fx; df: dfx; mit: Integer; eps: Extended; var it,st: Integer);
 
 {$R *.dfm}
 
@@ -141,7 +136,7 @@ end;
 
 procedure TForm1.inputComputeClick(Sender: TObject);
 begin
-  df(0);
+  ShowMessage ('lecim');
 end;
 
 end.
