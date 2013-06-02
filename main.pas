@@ -111,7 +111,7 @@ end;
 procedure showResultsInt(x: vector_int; opt, count: Integer); far;
 var i:Integer;
 begin
-  for i:=1 to Form1.outputShowResults.rowcount do
+  for i:=1 to count-1 do
     begin
       Form1.outputShowResultsInt.Cells[1,i]:=FloatToStr(x[i].a);
       Form1.outputShowResultsInt.Cells[2,i]:=FloatToStr(x[i].b);
@@ -152,7 +152,8 @@ var i: Integer;
 begin
   for i:=1 to n do
     begin
-      x_int[i]:=int_read(Form1.inputShowEntries.Cells[1,i]+' '+Form1.inputShowEntries.Cells[2,i]);
+      x_int[i].a:=left_read(Form1.inputShowEntriesInt.Cells[1,i]);
+      x_int[i].b:=right_read(Form1.inputShowEntriesInt.Cells[2,i]);
     end
 end;
 

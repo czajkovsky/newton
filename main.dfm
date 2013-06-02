@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = -18
-  Top = 231
+  Left = 100
+  Top = 152
   Width = 1065
   Height = 556
   Caption = 'Newton system'
