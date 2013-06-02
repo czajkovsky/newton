@@ -2,7 +2,8 @@ program newton;
 
 uses
   Forms,
-  main in 'main.pas' {Form1};
+  main in 'main.pas' {Form1},
+  nwtnpas in 'nwtnpas.pas';
 
 {$R *.res}
 

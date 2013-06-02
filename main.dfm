@@ -88,6 +88,7 @@ object Form1: TForm1
       Height = 25
       Caption = 'Compute'
       TabOrder = 4
+      OnClick = inputComputeClick
     end
   end
   object GroupBox2: TGroupBox

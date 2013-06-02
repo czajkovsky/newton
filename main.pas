@@ -6,6 +6,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, Grids;
+  nwtnpas in 'nwtnpas.pas';
   const
     size = 20;
   type
@@ -37,6 +38,7 @@ type
     inputComputeInt: TButton;
     procedure inputLoadEntriesClick(Sender: TObject);
     procedure inputLoadEntriesIntClick(Sender: TObject);
+    procedure inputComputeClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -66,7 +68,7 @@ end;
 procedure showEntriesInt(opt, count: Integer); far;
 var i:Integer;
 begin
-  inputShowEntriesInt.RowCount:=count;
+  Form1.inputShowEntriesInt.RowCount:=count;
   Form1.inputShowEntriesInt.Cells[0,0]:='xs';
   Form1.inputShowEntriesInt.Cells[1,0]:='values.left';
   Form1.inputShowEntriesInt.Cells[2,0]:='values.right';
@@ -77,8 +79,6 @@ begin
       Form1.inputShowEntriesInt.Cells[0,i]:='x'+IntToStr(i);
     end
 end;
-
-
 
 procedure showResults(opt, count: Integer); far;
 var i:Integer;
@@ -97,7 +97,7 @@ end;
 procedure showResultsInt(opt, count: Integer); far;
 var i:Integer;
 begin
-  outputShowResultsInt.RowCount:=count;
+  Form1.outputShowResultsInt.RowCount:=count;
   Form1.outputShowResultsInt.Cells[0,0]:='xs';
   Form1.outputShowResultsInt.Cells[1,0]:='results.left';
   Form1.outputShowResultsInt.Cells[2,0]:='results.right';
@@ -118,7 +118,7 @@ var
   it,st,i, n: integer;
 begin
   try
-    n:=strToInt(inputEntries.Text)+1; //to-do try except
+    n:=strToInt(inputEntries.Text)+1;
     showEntries(0, n);
     showResults(0, n);
   except
@@ -132,11 +132,16 @@ var
   n: integer;
 begin
   try
-    n:=strToInt(inputEntriesInt.Text)+1; //to-do try except
+    n:=strToInt(inputEntriesInt.Text)+1;
     showEntriesInt(0, n);
     showResultsInt(0, n);
   except
   end;
+end;
+
+procedure TForm1.inputComputeClick(Sender: TObject);
+begin
+  df(0);
 end;
 
 end.

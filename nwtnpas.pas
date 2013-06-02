@@ -14,9 +14,12 @@ uses
     x: arr;
     dfatx: arr;
 
-
-
 implementation
+
+procedure df(i: integer); far;
+begin
+  ShowMessage('Chuj');
+end;
 
 
 end.

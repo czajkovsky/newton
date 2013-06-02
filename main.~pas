@@ -53,7 +53,7 @@ implementation
 procedure showEntries(opt, count: Integer); far;
 var i:Integer;
 begin
-  inputShowEntries.RowCount:=count;
+  Form1.inputShowEntries.RowCount:=count;
   Form1.inputShowEntries.Cells[0,0]:='xs';
   Form1.inputShowEntries.Cells[1,0]:='values';
   for i:=1 to count do
@@ -66,7 +66,7 @@ end;
 procedure showEntriesInt(opt, count: Integer); far;
 var i:Integer;
 begin
-  inputShowEntriesInt.RowCount:=count;
+  Form1.inputShowEntriesInt.RowCount:=count;
   Form1.inputShowEntriesInt.Cells[0,0]:='xs';
   Form1.inputShowEntriesInt.Cells[1,0]:='values.left';
   Form1.inputShowEntriesInt.Cells[2,0]:='values.right';
@@ -97,7 +97,7 @@ end;
 procedure showResultsInt(opt, count: Integer); far;
 var i:Integer;
 begin
-  outputShowResultsInt.RowCount:=count;
+  Form1.outputShowResultsInt.RowCount:=count;
   Form1.outputShowResultsInt.Cells[0,0]:='xs';
   Form1.outputShowResultsInt.Cells[1,0]:='results.left';
   Form1.outputShowResultsInt.Cells[2,0]:='results.right';
@@ -118,7 +118,7 @@ var
   it,st,i, n: integer;
 begin
   try
-    n:=strToInt(inputEntries.Text)+1; //to-do try except
+    n:=strToInt(inputEntries.Text)+1;
     showEntries(0, n);
     showResults(0, n);
   except
@@ -132,7 +132,7 @@ var
   n: integer;
 begin
   try
-    n:=strToInt(inputEntriesInt.Text)+1; //to-do try except
+    n:=strToInt(inputEntriesInt.Text)+1;
     showEntriesInt(0, n);
     showResultsInt(0, n);
   except
