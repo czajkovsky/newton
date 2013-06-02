@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 268
-  Top = 289
-  Width = 1065
+  Left = 7
+  Top = 138
+  Width = 1232
   Height = 556
   Caption = 'Newton system'
   Color = clBtnFace
@@ -99,7 +99,7 @@ object Form1: TForm1
   object GroupBox2: TGroupBox
     Left = 528
     Top = 112
-    Width = 505
+    Width = 681
     Height = 401
     Caption = 'Interval arithmetic'
     TabOrder = 1
@@ -138,12 +138,16 @@ object Form1: TForm1
     object outputShowResultsInt: TStringGrid
       Left = 265
       Top = 88
-      Width = 224
+      Width = 400
       Height = 265
       ColCount = 3
       RowCount = 4
       TabOrder = 1
       Visible = False
+      ColWidths = (
+        64
+        159
+        170)
     end
     object inputEntriesInt: TEdit
       Left = 16
@@ -162,7 +166,7 @@ object Form1: TForm1
       OnClick = inputLoadEntriesIntClick
     end
     object inputComputeInt: TButton
-      Left = 416
+      Left = 592
       Top = 360
       Width = 75
       Height = 25
@@ -212,7 +216,7 @@ object Form1: TForm1
   object GroupBox4: TGroupBox
     Left = 528
     Top = 16
-    Width = 505
+    Width = 681
     Height = 81
     Caption = 'Computed values'
     TabOrder = 3

@@ -106,7 +106,7 @@ end;
 procedure showResults(x: vector; count: Integer); far;
 var i:Integer;
 begin
-  for i:=1 to Form1.outputShowResults.rowcount do
+  for i:=1 to Form1.outputShowResults.rowcount-1 do
     begin
       Form1.outputShowResults.Cells[1,i]:=FloatToStrF(x[i], ffExponent, 17, 4);
     end
