@@ -8,7 +8,7 @@ uses
   Dialogs, StdCtrls, ComCtrls, Grids, nwtsys;
   var
     x: vector;
-    //dfatx: arr;
+    n: Integer;
 
 type
   TForm1 = class(TForm)
@@ -43,7 +43,7 @@ var
   Form1: TForm1;
 
 implementation
-  procedure Newtonsystem (n: Integer; var x: vector; f: fx; df: dfx; mit: Integer; eps: Extended; var it,st: Integer);
+
 
 {$R *.dfm}
 
@@ -84,7 +84,9 @@ begin
   for i:=1 to count do
     begin
       if opt=0 then
-        Form1.outputShowResults.Cells[1,i]:='-';
+        Form1.outputShowResults.Cells[1,i]:='-'
+      else
+        Form1.outputShowResults.Cells[1,i]:=FloatToStr(x[i]);
       Form1.outputShowResults.Cells[0,i]:='x'+IntToStr(i);
     end
 end;
@@ -104,18 +106,18 @@ begin
           Form1.outputShowResultsInt.Cells[2,i]:='-';
         end;
       Form1.outputShowResultsInt.Cells[0,i]:='x'+IntToStr(i);
-    end
+    end;
 end;
 
 procedure TForm1.inputLoadEntriesClick(Sender: TObject);
 var
   res: extended;
-  it,st,i, n: integer;
+  it,st,i: integer;
 begin
   try
-    n:=strToInt(inputEntries.Text)+1;
-    showEntries(0, n);
-    showResults(0, n);
+    n:=strToInt(inputEntries.Text);
+    showEntries(0, n+1);
+    showResults(0, n+1);
   except
     on Exception : EConvertError do
       ShowMessage('Not an integer!');
@@ -123,20 +125,37 @@ begin
 end;
 
 procedure TForm1.inputLoadEntriesIntClick(Sender: TObject);
-var
-  n: integer;
 begin
   try
-    n:=strToInt(inputEntriesInt.Text)+1;
-    showEntriesInt(0, n);
-    showResultsInt(0, n);
+    n:=strToInt(inputEntriesInt.Text);
+    showEntriesInt(0, n+1);
+    showResultsInt(0, n+1);
   except
   end;
 end;
 
+procedure loadVector();
+var i: Integer;
+begin
+  for i:=1 to n do
+    begin
+      x[i]:=StrToFloat(Form1.inputShowEntries.Cells[1,i]);
+    end
+end;
+
+procedure compute();
+var it,st:Integer;
+begin
+  loadVector();
+  showMessage(IntToStr(n));
+  //Newtonsystem(3, x, f, df, 10, 1e-16, it, st);
+  showMessage(IntToStr(it));
+  showResults(1,n);
+end;
+
 procedure TForm1.inputComputeClick(Sender: TObject);
 begin
-  ShowMessage ('lecim');
+  compute();
 end;
 
 end.

@@ -5,7 +5,7 @@ interface
   type vector1 = array [1..200] of extended;
   type vector2 = array [1..200] of integer;
   type vector3 = array [1..200] of extended;
-  type fx = function(i,n: Integer; x: Vector): Extended; far;
+  type fx = function(i,n: Integer; x: vector): Extended; far;
   type dfx = procedure (i,n: Integer; x: vector; var dfatx : vector); far;
   procedure Newtonsystem (n         : Integer;
                           var x     : vector;
@@ -14,9 +14,15 @@ interface
                           mit       : Integer;
                           eps       : Extended;
                           var it,st : Integer);
+  function f(i,n:Integer; x: vector) : Extended; far;
+  procedure df (i, n: Integer; x: vector; var dfatx: vector); far;
+  function f1(i,n:Integer; x: vector) : Extended; far;
+  procedure df1 (i, n: Integer; x: vector; var dfatx: vector); far;
+
 
 
 implementation
+
 function f(i,n:Integer; x: vector) : Extended; far;
 begin
   case i of
@@ -24,6 +30,27 @@ begin
     2: f:=Sqr(x[1])-81*Sqr(x[2]+0.1)+Sin(x[3])+1.06;
     3: f:=Exp(-x[1]*x[2])+20*x[3]+(10*Pi-3)/3;
   end
+end;
+
+function f1(i,n:Integer; x: vector) : Extended; far;
+begin
+  case i of
+    1: f1:=Sqr(x[1])+8*x[2]-16;
+    2: f1:=x[1]-Exp(x[2]);
+  end
+end;
+
+procedure df1(i, n: Integer; x: vector; var dfatx: vector); far;
+begin
+  case i of
+    1: begin
+        dfatx[1]:=2*x[1];
+        dfatx[2]:=8
+      end;
+    2: begin
+        dfatx[1]:=1;
+        dfatx[2]:=-Exp(x[2])
+      end;
 end;
 
 procedure df (i, n: Integer; x: vector; var dfatx: vector); far;
