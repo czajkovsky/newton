@@ -1,8 +1,8 @@
 object Form1: TForm1
-  Left = 210
-  Top = 73
-  Width = 1232
-  Height = 556
+  Left = 294
+  Top = 97
+  Width = 711
+  Height = 761
   Caption = 'Newton system'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -11,15 +11,17 @@ object Form1: TForm1
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object GroupBox1: TGroupBox
     Left = 8
-    Top = 112
-    Width = 505
+    Top = 240
+    Width = 681
     Height = 400
     Caption = 'Classic arithmetic'
     TabOrder = 0
+    Visible = False
     object labelInitialValues: TLabel
       Left = 16
       Top = 72
@@ -93,16 +95,18 @@ object Form1: TForm1
       Height = 25
       Caption = 'Compute'
       TabOrder = 4
+      Visible = False
       OnClick = inputComputeClick
     end
   end
   object GroupBox2: TGroupBox
-    Left = 528
-    Top = 112
+    Left = 8
+    Top = 240
     Width = 681
     Height = 401
     Caption = 'Interval arithmetic'
     TabOrder = 1
+    Visible = False
     object labelNumberOfIntervals: TLabel
       Left = 16
       Top = 24
@@ -173,13 +177,14 @@ object Form1: TForm1
       Height = 25
       Caption = 'Compute'
       TabOrder = 4
+      Visible = False
       OnClick = inputComputeIntClick
     end
   end
   object GroupBox3: TGroupBox
     Left = 8
     Top = 16
-    Width = 505
+    Width = 681
     Height = 81
     Caption = 'Parameters'
     TabOrder = 2
@@ -215,8 +220,8 @@ object Form1: TForm1
     end
   end
   object GroupBox4: TGroupBox
-    Left = 528
-    Top = 16
+    Left = 8
+    Top = 112
     Width = 681
     Height = 81
     Caption = 'Computed values'
@@ -253,5 +258,15 @@ object Form1: TForm1
       TabOrder = 1
       Text = '-'
     end
+  end
+  object inputModeSelect: TComboBox
+    Left = 24
+    Top = 208
+    Width = 145
+    Height = 21
+    ItemHeight = 13
+    TabOrder = 4
+    Text = 'Select'
+    OnChange = inputModeSelectChange
   end
 end

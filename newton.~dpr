@@ -4,7 +4,8 @@ uses
   Forms,
   main in 'main.pas' {Form1},
   nwtnpas in 'nwtnpas.pas',
-  IntervalArithmetic in 'intervalarithmetic.pas';
+  IntervalArithmetic in 'intervalarithmetic.pas',
+  nwtsys in 'nwtsys.pas';
 
 {$R *.res}
 

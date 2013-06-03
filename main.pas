@@ -1,3 +1,56 @@
+{$A8,B-,C+,D+,E-,F-,G+,H+,I+,J-,K-,L+,M-,N+,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1}
+{$MINSTACKSIZE $00004000}
+{$MAXSTACKSIZE $00100000}
+{$IMAGEBASE $00400000}
+{$APPTYPE GUI}
+{$WARN SYMBOL_DEPRECATED ON}
+{$WARN SYMBOL_LIBRARY ON}
+{$WARN SYMBOL_PLATFORM ON}
+{$WARN UNIT_LIBRARY ON}
+{$WARN UNIT_PLATFORM ON}
+{$WARN UNIT_DEPRECATED ON}
+{$WARN HRESULT_COMPAT ON}
+{$WARN HIDING_MEMBER ON}
+{$WARN HIDDEN_VIRTUAL ON}
+{$WARN GARBAGE ON}
+{$WARN BOUNDS_ERROR ON}
+{$WARN ZERO_NIL_COMPAT ON}
+{$WARN STRING_CONST_TRUNCED ON}
+{$WARN FOR_LOOP_VAR_VARPAR ON}
+{$WARN TYPED_CONST_VARPAR ON}
+{$WARN ASG_TO_TYPED_CONST ON}
+{$WARN CASE_LABEL_RANGE ON}
+{$WARN FOR_VARIABLE ON}
+{$WARN CONSTRUCTING_ABSTRACT ON}
+{$WARN COMPARISON_FALSE ON}
+{$WARN COMPARISON_TRUE ON}
+{$WARN COMPARING_SIGNED_UNSIGNED ON}
+{$WARN COMBINING_SIGNED_UNSIGNED ON}
+{$WARN UNSUPPORTED_CONSTRUCT ON}
+{$WARN FILE_OPEN ON}
+{$WARN FILE_OPEN_UNITSRC ON}
+{$WARN BAD_GLOBAL_SYMBOL ON}
+{$WARN DUPLICATE_CTOR_DTOR ON}
+{$WARN INVALID_DIRECTIVE ON}
+{$WARN PACKAGE_NO_LINK ON}
+{$WARN PACKAGED_THREADVAR ON}
+{$WARN IMPLICIT_IMPORT ON}
+{$WARN HPPEMIT_IGNORED ON}
+{$WARN NO_RETVAL ON}
+{$WARN USE_BEFORE_DEF ON}
+{$WARN FOR_LOOP_VAR_UNDEF ON}
+{$WARN UNIT_NAME_MISMATCH ON}
+{$WARN NO_CFG_FILE_FOUND ON}
+{$WARN MESSAGE_DIRECTIVE ON}
+{$WARN IMPLICIT_VARIANTS ON}
+{$WARN UNICODE_TO_LOCALE ON}
+{$WARN LOCALE_TO_UNICODE ON}
+{$WARN IMAGEBASE_MULTIPLE ON}
+{$WARN SUSPICIOUS_TYPECAST ON}
+{$WARN PRIVATE_PROPACCESSOR ON}
+{$WARN UNSAFE_TYPE OFF}
+{$WARN UNSAFE_CODE OFF}
+{$WARN UNSAFE_CAST OFF}
 unit main;
 
 interface
@@ -41,10 +94,13 @@ type
     outputMessage: TEdit;
     Label3: TLabel;
     Label4: TLabel;
+    inputModeSelect: TComboBox;
     procedure inputLoadEntriesClick(Sender: TObject);
     procedure inputLoadEntriesIntClick(Sender: TObject);
     procedure inputComputeClick(Sender: TObject);
     procedure inputComputeIntClick(Sender: TObject);
+    procedure inputModeSelectChange(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +120,7 @@ var i:Integer;
 begin
   Form1.inputShowEntries.Visible:=true;
   Form1.outputShowResults.Visible:=true;
+  Form1.inputCompute.Visible:=true;
   Form1.inputShowEntries.RowCount:=count;
   Form1.outputShowResults.RowCount:=count;
   Form1.inputShowEntries.Cells[0,0]:='xs';
@@ -83,6 +140,7 @@ procedure showEntriesInt(count: Integer); far;
 var i:Integer;
 begin
   Form1.inputShowEntriesInt.Visible:=true;
+  Form1.inputComputeInt.Visible:=true;
   Form1.outputShowResultsInt.Visible:=true;
   Form1.inputShowEntriesInt.RowCount:=count;
   Form1.outputShowResultsInt.RowCount:=count;
@@ -191,7 +249,6 @@ begin
   showResultsInt(x_int,n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
-  
 end;
 
 procedure TForm1.inputComputeClick(Sender: TObject);
@@ -202,6 +259,26 @@ end;
 procedure TForm1.inputComputeIntClick(Sender: TObject);
 begin
   compute_int();
+end;
+
+procedure TForm1.inputModeSelectChange(Sender: TObject);
+begin
+  if(inputModeSelect.Text = 'Interval') then
+    begin
+      GroupBox2.Visible:=true;
+      GroupBox1.Visible:=false;
+    end;
+  if(inputModeSelect.Text = 'Classic') then
+    begin
+      GroupBox1.Visible:=true;
+      GroupBox2.Visible:=false;
+    end;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  inputModeSelect.Items.Add('Interval');
+  inputModeSelect.Items.Add('Classic');
 end;
 
 end.
