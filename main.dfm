@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 7
-  Top = 138
+  Left = 210
+  Top = 73
   Width = 1232
   Height = 556
   Caption = 'Newton system'
@@ -142,6 +142,7 @@ object Form1: TForm1
       Height = 265
       ColCount = 3
       RowCount = 4
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
       TabOrder = 1
       Visible = False
       ColWidths = (

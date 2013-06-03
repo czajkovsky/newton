@@ -171,7 +171,7 @@ begin
   loadVector(x);
   eps:=StrToFloat(Form1.inputEps.Text);
   mit:=StrToInt(Form1.inputMit.Text);
-  Newtonsystem(n, x, f1, df1, mit, eps, it, st);
+  Newtonsystem(n, x, f, df, mit, eps, it, st);
   showResults(x, n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
@@ -191,6 +191,7 @@ begin
   showResultsInt(x_int,n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
+  
 end;
 
 procedure TForm1.inputComputeClick(Sender: TObject);
