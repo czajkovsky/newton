@@ -1,68 +1,19 @@
-{$A8,B-,C+,D+,E-,F-,G+,H+,I+,J-,K-,L+,M-,N+,O+,P+,Q-,R-,S-,T-,U-,V+,W-,X+,Y+,Z1}
-{$MINSTACKSIZE $00004000}
-{$MAXSTACKSIZE $00100000}
-{$IMAGEBASE $00400000}
-{$APPTYPE GUI}
-{$WARN SYMBOL_DEPRECATED ON}
-{$WARN SYMBOL_LIBRARY ON}
-{$WARN SYMBOL_PLATFORM ON}
-{$WARN UNIT_LIBRARY ON}
-{$WARN UNIT_PLATFORM ON}
-{$WARN UNIT_DEPRECATED ON}
-{$WARN HRESULT_COMPAT ON}
-{$WARN HIDING_MEMBER ON}
-{$WARN HIDDEN_VIRTUAL ON}
-{$WARN GARBAGE ON}
-{$WARN BOUNDS_ERROR ON}
-{$WARN ZERO_NIL_COMPAT ON}
-{$WARN STRING_CONST_TRUNCED ON}
-{$WARN FOR_LOOP_VAR_VARPAR ON}
-{$WARN TYPED_CONST_VARPAR ON}
-{$WARN ASG_TO_TYPED_CONST ON}
-{$WARN CASE_LABEL_RANGE ON}
-{$WARN FOR_VARIABLE ON}
-{$WARN CONSTRUCTING_ABSTRACT ON}
-{$WARN COMPARISON_FALSE ON}
-{$WARN COMPARISON_TRUE ON}
-{$WARN COMPARING_SIGNED_UNSIGNED ON}
-{$WARN COMBINING_SIGNED_UNSIGNED ON}
-{$WARN UNSUPPORTED_CONSTRUCT ON}
-{$WARN FILE_OPEN ON}
-{$WARN FILE_OPEN_UNITSRC ON}
-{$WARN BAD_GLOBAL_SYMBOL ON}
-{$WARN DUPLICATE_CTOR_DTOR ON}
-{$WARN INVALID_DIRECTIVE ON}
-{$WARN PACKAGE_NO_LINK ON}
-{$WARN PACKAGED_THREADVAR ON}
-{$WARN IMPLICIT_IMPORT ON}
-{$WARN HPPEMIT_IGNORED ON}
-{$WARN NO_RETVAL ON}
-{$WARN USE_BEFORE_DEF ON}
-{$WARN FOR_LOOP_VAR_UNDEF ON}
-{$WARN UNIT_NAME_MISMATCH ON}
-{$WARN NO_CFG_FILE_FOUND ON}
-{$WARN MESSAGE_DIRECTIVE ON}
-{$WARN IMPLICIT_VARIANTS ON}
-{$WARN UNICODE_TO_LOCALE ON}
-{$WARN LOCALE_TO_UNICODE ON}
-{$WARN IMAGEBASE_MULTIPLE ON}
-{$WARN SUSPICIOUS_TYPECAST ON}
-{$WARN PRIVATE_PROPACCESSOR ON}
-{$WARN UNSAFE_TYPE OFF}
-{$WARN UNSAFE_CODE OFF}
-{$WARN UNSAFE_CAST OFF}
 unit main;
 
 interface
 
-
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, Grids, nwtsys, IntervalArithmetic;
+  Dialogs, StdCtrls, ComCtrls, Grids, nwtsys, IntervalArithmetic, Buttons;
   var
     x: vector;
     x_int: vector_int;
     n: Integer;
+    dllHandler: cardinal;
+    dllFX_int: fx_int;
+    dllDX_int: dfx_int;
+    dllFX: fx;
+    dllDX: dfx;
 
 type
   TForm1 = class(TForm)
@@ -95,12 +46,24 @@ type
     Label3: TLabel;
     Label4: TLabel;
     inputModeSelect: TComboBox;
+    inputLoadDll: TButton;
+    LoadDLLDialog: TOpenDialog;
+    GroupBox5: TGroupBox;
+    inputEntriesInt2: TEdit;
+    inputLoadEntriesInt2: TButton;
+    inputShowEntriesInt2: TStringGrid;
+    Label5: TLabel;
+    outputShowResultsInt2: TStringGrid;
+    inputComputeInt2: TBitBtn;
+    Label6: TLabel;
     procedure inputLoadEntriesClick(Sender: TObject);
     procedure inputLoadEntriesIntClick(Sender: TObject);
     procedure inputComputeClick(Sender: TObject);
     procedure inputComputeIntClick(Sender: TObject);
     procedure inputModeSelectChange(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure inputLoadDllClick(Sender: TObject);
+    procedure inputLoadEntriesInt2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -111,7 +74,6 @@ var
   Form1: TForm1;
 
 implementation
-
 
 {$R *.dfm}
 
@@ -161,6 +123,29 @@ begin
     end
 end;
 
+procedure showEntriesInt2(count: Integer); far;
+var i:Integer;
+begin
+  Form1.inputShowEntriesInt2.Visible:=true;
+  Form1.inputComputeInt2.Visible:=true;
+  Form1.outputShowResultsInt2.Visible:=true;
+  Form1.inputShowEntriesInt2.RowCount:=count;
+  Form1.outputShowResultsInt2.RowCount:=count;
+  Form1.inputShowEntriesInt2.Cells[0,0]:='xs';
+  Form1.inputShowEntriesInt2.Cells[1,0]:='values';
+  Form1.outputShowResultsInt2.Cells[0,0]:='xs';
+  Form1.outputShowResultsInt2.Cells[1,0]:='results.left';
+  Form1.outputShowResultsInt2.Cells[2,0]:='results.right';
+  for i:=1 to count do
+    begin
+      Form1.inputShowEntriesInt2.Cells[1,i]:='0';
+      Form1.inputShowEntriesInt2.Cells[0,i]:='x'+IntToStr(i);
+      Form1.outputShowResultsInt2.Cells[1,i]:='-';
+      Form1.outputShowResultsInt2.Cells[2,i]:='-';
+      Form1.outputShowResultsInt2.Cells[0,i]:='x'+IntToStr(i);
+    end
+end;
+
 procedure showResults(x: vector; count: Integer); far;
 var i:Integer;
 begin
@@ -171,6 +156,16 @@ begin
 end;
 
 procedure showResultsInt(x: vector_int; count: Integer); far;
+var i:Integer;
+begin
+  for i:=1 to count-1 do
+    begin
+      Form1.outputShowResultsInt.Cells[1,i]:=FloatToStrF(x[i].a, ffExponent, 17, 4);
+      Form1.outputShowResultsInt.Cells[2,i]:=FloatToStrF(x[i].b, ffExponent, 17, 4);
+    end
+end;
+
+procedure showResultsInt2(x: vector_int; count: Integer); far;
 var i:Integer;
 begin
   for i:=1 to count-1 do
@@ -219,6 +214,15 @@ begin
     end
 end;
 
+procedure loadVectorInt2(x_int:vector_int);
+var i: Integer;
+begin
+  for i:=1 to n do
+    begin
+      x_int[i]:=int_read(Form1.inputShowEntriesInt2.Cells[1,i]);
+    end
+end;
+
 procedure compute();
 var
   it, st, mit:Integer;
@@ -229,7 +233,7 @@ begin
   loadVector(x);
   eps:=StrToFloat(Form1.inputEps.Text);
   mit:=StrToInt(Form1.inputMit.Text);
-  Newtonsystem(n, x, f, df, mit, eps, it, st);
+  Newtonsystem(n, x, dllFx, dllDX, mit, eps, it, st);
   showResults(x, n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
@@ -245,8 +249,24 @@ begin
   loadVectorInt(x_int);
   eps:=StrToFloat(Form1.inputEps.Text);
   mit:=StrToInt(Form1.inputMit.Text);
-  Newtonsystem_int(n, x_int, f1_int, df1_int, mit, eps, it, st);
+  Newtonsystem_int(n, x_int, dllFX_int, dllDX_int, mit, eps, it, st);
   showResultsInt(x_int,n+1);
+  Form1.outputIt.Text:=IntToStr(it);
+  Form1.outputMessage.Text:=IntToStr(st);
+end;
+
+procedure compute_int2();
+var
+  it, st, mit:Integer;
+  eps: Extended;
+  x_int: vector_int;
+begin
+  SetLength(x_int, n+1);
+  loadVectorInt2(x_int);
+  eps:=StrToFloat(Form1.inputEps.Text);
+  mit:=StrToInt(Form1.inputMit.Text);
+  Newtonsystem_int(n, x_int, dllFX_int, dllDX_int, mit, eps, it, st);
+  showResultsInt2(x_int,n+1);
   Form1.outputIt.Text:=IntToStr(it);
   Form1.outputMessage.Text:=IntToStr(st);
 end;
@@ -267,18 +287,61 @@ begin
     begin
       GroupBox2.Visible:=true;
       GroupBox1.Visible:=false;
+      GroupBox5.Visible:=false;
     end;
   if(inputModeSelect.Text = 'Classic') then
     begin
       GroupBox1.Visible:=true;
       GroupBox2.Visible:=false;
+      GroupBox5.Visible:=false;
+    end;
+  if(inputModeSelect.Text = 'Interval2') then
+    begin
+      GroupBox1.Visible:=false;
+      GroupBox2.Visible:=false;
+      GroupBox5.Visible:=true;
     end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   inputModeSelect.Items.Add('Interval');
+  inputModeSelect.Items.Add('Interval2');
   inputModeSelect.Items.Add('Classic');
+end;
+
+procedure TForm1.inputLoadDllClick(Sender: TObject);
+
+begin
+    LoadDLLDialog := TOpenDialog.Create(self);
+    LoadDLLDialog.InitialDir := GetCurrentDir;
+    LoadDLLDialog.Options := [ofFileMustExist];
+    LoadDLLDialog.Filter := 'Dynamically Linked Libraries|*.dll';
+
+    if LoadDLLDialog.Execute then
+        begin
+            dllHandler := LoadLibrary(PAnsiChar(LoadDLLDialog.Filename));
+            if ( dllHandler <> 0 ) then
+                begin
+                    @dllFX := GetProcAddress(dllHandler, 'f1');
+                    @dllDX := GetProcAddress(dllHandler, 'df1');
+                    @dllFX_int := GetProcAddress(dllHandler, 'f1_int');
+                    @dllDX_int := GetProcAddress(dllHandler, 'df1_int');
+                end
+            else
+                ShowMessage('Did not load file');
+        end
+    else
+        ShowMessage('Loading file was cancelled');
+
+    LoadDLLDialog.Free;
+
+end;
+
+procedure TForm1.inputLoadEntriesInt2Click(Sender: TObject);
+begin
+  n:=strToInt(inputEntriesInt2.Text);
+  showEntriesInt2(n+1);
 end;
 
 end.
